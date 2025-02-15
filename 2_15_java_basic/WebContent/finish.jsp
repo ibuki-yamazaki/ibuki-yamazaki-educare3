@@ -4,10 +4,16 @@
 // セッションからプレイヤー名を取得する
 String player = (String) session.getAttribute("player");
 
-// プレイヤー名が null の場合の対策（デフォルト値 "不明" を設定）
-if (player == null) {
-    player = "不明";
+if (player.equals("B")) {
+    player = "A";
+} else {
+    player = "B";
 }
+
+session.setAttribute("player", player);
+
+
+
     
 %>
 <!DOCTYPE html>

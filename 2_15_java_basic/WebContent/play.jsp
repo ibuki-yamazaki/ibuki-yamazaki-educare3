@@ -35,13 +35,13 @@
     // プレイヤーの切り替え
     String player = (String) session.getAttribute("player");
     if (Utility.isNullOrEmpty(player)) { // isNullOrEmpty を使用
-        player = "A"; // 初期値
+        player = "B"; // 初期値
     }
 
-    if (player.equals("A")) {
-        player = "B";
-    } else {
+    if (player.equals("B")) {
         player = "A";
+    } else {
+        player = "B";
     }
     session.setAttribute("player", player);
 %>
