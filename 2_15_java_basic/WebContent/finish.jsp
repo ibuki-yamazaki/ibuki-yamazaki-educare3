@@ -27,7 +27,7 @@ session.setAttribute("player", player);
   <h1>石取りゲーム</h1>
   <div class="info">
     <h2>
-     <%=player %>
+     勝者：プレイヤー<%=player %>！！
     </h2>
     <form action="index.jsp">
       <button class="btn" type="submit">先頭に戻る</button>
