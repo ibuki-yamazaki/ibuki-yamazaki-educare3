@@ -5,7 +5,7 @@
     <title>生まれた年を入力</title>
 </head>
 <body>
-    <form action="ElPractice_Servlet01" method="post">
+    <form action="ElPractice_Servlet01" method="get">
         生まれた年を西暦で入力してください。<br>
         <input type="text" name="year">
         <input type="submit" value="決定">
