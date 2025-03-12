@@ -5,5 +5,5 @@ public abstract class Greet {
 		dispSpeech();
 	}
 
-	public abstract void dispSpeech();
+	public abstract void dispSpeech();//からのメソッド
 }
