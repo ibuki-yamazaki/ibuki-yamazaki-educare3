@@ -66,7 +66,7 @@ class JunitUtilTest {
         assertFalse(JunitUtil.isSmallAlphabet(null));  // null
         assertFalse(JunitUtil.isSmallAlphabet(""));    // 空文字
         assertFalse(JunitUtil.isSmallAlphabet("1"));   // 数字
-        assertFalse(JunitUtil.isSmallAlphabet("l"));   // 小文字 "l" → 期待値が false だが誤り？
+        assertFalse(JunitUtil.isSmallAlphabet("!"));   // 小文字 "l" → 期待値が false だが誤り？
         assertFalse(JunitUtil.isSmallAlphabet("あ"));   // 日本語文字
         assertFalse(JunitUtil.isSmallAlphabet("A"));
 	}// 大文字
@@ -85,9 +85,9 @@ class JunitUtilTest {
         assertFalse(JunitUtil.isTriangle(1, 1, 2147483647));  // No.9
         assertFalse(JunitUtil.isTriangle(1, 2147483647, 1));  // No.10
         assertFalse(JunitUtil.isTriangle(2147483647, 1, 1));  // No.11
-        assertFalse(JunitUtil.isTriangle(2147483647, 2147483647, 1));  // No.12
+        assertFalse(JunitUtil.isTriangle(1,2147483647, 2147483647));  // No.12
         assertFalse(JunitUtil.isTriangle(2147483647, 1, 2147483647));  // No.13
-        assertFalse(JunitUtil.isTriangle(1, 2147483647, 2147483647));  // No.14
+        assertFalse(JunitUtil.isTriangle( 2147483647, 2147483647,1));  // No.14
         assertFalse(JunitUtil.isTriangle(2147483647, 2147483647, 2147483647));  // No.15
     }
 	
