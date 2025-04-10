@@ -85,10 +85,10 @@ class JunitUtilTest {
         assertFalse(JunitUtil.isTriangle(1, 1, 2147483647));  // No.9
         assertFalse(JunitUtil.isTriangle(1, 2147483647, 1));  // No.10
         assertFalse(JunitUtil.isTriangle(2147483647, 1, 1));  // No.11
-        assertFalse(JunitUtil.isTriangle(1,2147483647, 2147483647));  // No.12
-        assertFalse(JunitUtil.isTriangle(2147483647, 1, 2147483647));  // No.13
-        assertFalse(JunitUtil.isTriangle( 2147483647, 2147483647,1));  // No.14
-        assertFalse(JunitUtil.isTriangle(2147483647, 2147483647, 2147483647));  // No.15
+        assertTrue(JunitUtil.isTriangle(1,2147483647, 2147483647));  // No.12
+        assertTrue(JunitUtil.isTriangle(2147483647, 1, 2147483647));  // No.13
+        assertTrue(JunitUtil.isTriangle( 2147483647, 2147483647,1));  // No.14
+        assertTrue(JunitUtil.isTriangle(2147483647, 2147483647, 2147483647));  // No.15
     }
 	
 	 @Test

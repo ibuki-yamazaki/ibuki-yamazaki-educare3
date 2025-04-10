@@ -1,36 +1,23 @@
-import java.util.Scanner;
 
 public class Combination_Calc {
-	
-	// 階乗を計算するメソッド
-    public static long factorial(int n) {
+	// 組み合わせ nCr を計算するメソッド
+    public static long combination(int n, int r) {
+        if (r < 0 || n < 0 || r > n) {
+            throw new IllegalArgumentException("Invalid values for n and r.");
+        }
+        if (r == 0 || r == n) {
+            return 1;
+        }
+
+        return factorial(n) / (factorial(r) * factorial(n - r));
+    }
+
+    // 階乗を計算するメソッド
+    private static long factorial(int num) {
         long result = 1;
-        for (int i = 1; i <= n; i++) {
+        for (int i = 2; i <= num; i++) {
             result *= i;
         }
         return result;
     }
-
-    // nCr を計算するメソッド
-    public static long combination(int n, int r) {
-        if (r > n) return 0;
-        return factorial(n) / (factorial(r) * factorial(n - r));
-    }
-
-	public static void main(String[] args) {
-		// TODO 自動生成されたメソッド・スタブ
-		
-		Scanner scanner = new Scanner(System.in);
-
-        System.out.print("n の値を入力してください: ");
-        int n = scanner.nextInt();
-
-        System.out.print("r の値を入力してください: ");
-        int r = scanner.nextInt();
-
-        long result = combination(n, r);
-        System.out.println(n + "C" + r + " = " + result);
-
-	}
-
 }
