@@ -1,0 +1,85 @@
+body {
+  text-align: center;
+}
+
+input[type="password"] {
+  margin: 5px;
+}
+.error {
+  color: red;
+}
+
+.info {
+  border: solid 2px #4682b4;
+  border-radius: 20px;
+  width: 600px;
+  margin: 10px auto 10px auto;
+}
+
+.btn {
+  width: 150px;
+  margin: 0px 0px 10px 0px;
+  color: white;
+  text-align: center;
+  font-size: 21px;
+  font-weight: bold;
+  background-color: #87cefa;
+  border-radius: 10px;
+  cursor: pointer;
+  border: 0px;
+  padding: 5px;
+}
+
+.petInfoTable {
+/*   width: 100%; */
+  font-size: 21px;
+  margin: auto;
+}
+
+.petInfoTable th{
+  text-align: right;
+/*   width:40%; */
+}
+
+.petInfoTable td{
+  text-align: left;
+}
+
+.petInfoTitle {
+  width: 150px;
+  font-size: 21px;
+  font-weight: bold;
+}
+
+.fat {
+  color: red;
+}
+
+.dangerous {
+  color: red;
+}
+
+.update-msg {
+  color: red;
+}
+
+.update {
+  border: solid 2px #ffa07a;
+  border-radius: 20px;
+  width: 600px;
+  margin: 10px auto 10px auto;
+}
+
+.btn-update {
+  width: 150px;
+  margin: 10px 0px 10px 0px;
+  color: white;
+  text-align: center;
+  font-size: 21px;
+  font-weight: bold;
+  background-color: #fa8072;
+  border-radius: 10px;
+  cursor: pointer;
+  border: 0px;
+  padding: 5px;
+}
