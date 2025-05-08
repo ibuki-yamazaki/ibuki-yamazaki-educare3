@@ -2,46 +2,66 @@
   pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ page import="jp.co.sample.pet.Pet" %>
+<%@ page import="jp.co.sample.pet.Dog" %>
+<%@ page import="jp.co.sample.pet.Cat" %>
+
+<%
+    Pet pet = (Pet) request.getAttribute("selectedPet");
+    String type = (String) request.getAttribute("type");
+    
+%>
 
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Java応用課題</title>
-<link href="css/styles.css" rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>Java応用課題</title>
+  <link href="css/styles.css" rel="stylesheet">
 </head>
 <body>
   <h1>ペット情報管理</h1>
   <div class="info">
     <h2>ペット情報</h2>
 
-    <table class="petInfoTable">
-      <tr>
-        <th>名前：</th>
-        <td>あああ</td>
-      </tr>
-      <tr>
-        <th>年齢：</th>
-        <td>111</td>
-      </tr>
-      <tr>
-        <th>体長：</th>
-        <td>222</td>
-      </tr>
-      <tr>
-        <th>体重：</th>
-        <td>333 <span class="error">※太り気味です</span>
-        </td>
-      </tr>
-      <tr>
-        <th>種別：</th>
-        <td>いいい</td>
-      </tr>
-      <tr>
-        <th>散歩場所：</th>
-        <td>ううう</td>
-      </tr>
-    </table>
+    <% if (pet != null) { %>
+      <table class="petInfoTable">
+        <tr>
+          <th>名前：</th>
+          <td><%= pet.getName() %></td>
+        </tr>
+        <tr>
+          <th>年齢：</th>
+          <td><%= pet.getAge() %></td>
+        </tr>
+        <tr>
+          <th>体長：</th>
+          <td><%= pet.getHeight() %></td>
+        </tr>
+        <tr>
+          <th>体重：</th>
+          <td><%= pet.getWeight() %></td>
+        </tr>
+        <tr>
+          <th>種別：</th>
+          <td><%= pet.getType() %></td>
+        </tr>
+
+        <% if ("dog".equals(type)) { %>
+          <tr>
+            <th>散歩場所：</th>
+            <td><%= ((Dog) pet).getWalkingPlace() %></td>
+          </tr>
+        <% } else if ("cat".equals(type)) { %>
+          <tr>
+            <th>お気に入り遊具：</th>
+            <td><%= ((Cat) pet).getFavoriteItem() %></td>
+          </tr>
+        <% } %>
+      </table>
+    <% } else { %>
+      <p>ペット情報が取得できませんでした。</p>
+    <% } %>
   </div>
 
   <form action="petList.jsp">

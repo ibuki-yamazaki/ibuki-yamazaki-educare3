@@ -2,6 +2,13 @@
   pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ page import="jp.co.sample.servlet.PetSessionInfo" %>
+<%@ page import="jp.co.sample.servlet.PetSessionInfo" %>
+
+<%
+    PetSessionInfo petInfo = (PetSessionInfo) session.getAttribute("petInfo");
+%>
+
 
 <!DOCTYPE html>
 <html>
@@ -15,13 +22,13 @@
 
   <div class="info">
     <h2>ペット一覧</h2>
-    <form action="petListServlet">
-      <button class="btn" type="submit" name="btn" value="dog">犬の名前</button>
-      <button class="btn" type="submit" name="btn" value="cat">猫の名前</button>
+    <form action="PetListServlet" method="get">
+      <button class="btn" type="submit" name="btn" value="dog"><%= petInfo.getDogName() %></button>
+      <button class="btn" type="submit" name="btn" value="cat"><%= petInfo.getCatName() %></button>
     </form>
   </div>
 
-  <form action="index.jsp">
+  <form action="PetListServlet" method="get">
     <button class="btn" type="submit">先頭に戻る</button>
   </form>
 </body>

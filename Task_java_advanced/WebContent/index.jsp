@@ -2,7 +2,7 @@
   pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-
+<%@ page import="jp.co.sample.servlet.PetSessionInfo" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,7 +16,9 @@
   <div class="info">
     <h2>トップページ</h2>
     <form action="startServlet" method="post">
-      <p class="error">※エラーメッセージ</p>
+       <c:if test="${not empty errorMsg}">
+        <p class="error">${errorMsg}</p>  <!-- ←ここでサーブレットから受け取ったエラーを出す -->
+      </c:if>
       暗証番号：
       <input type="password" name="pass">
       <br />
