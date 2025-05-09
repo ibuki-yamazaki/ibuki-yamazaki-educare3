@@ -1,5 +1,9 @@
 package jp.co.sample.util;
 
+import jp.co.sample.pet.Cat;
+import jp.co.sample.pet.Dog;
+import jp.co.sample.pet.Pet;
+
 //todo: 必要なクラスがそろえばコメントアウトを戻せば良い。
 //import jp.co.sample.pet.Cat;
 //import jp.co.sample.pet.Dog;
@@ -59,15 +63,24 @@ public class PetUtil {
      * @return
      */
     // todo: このメソッドの処理は作成済。必要なクラスがそろえばコメントアウトを戻せば良い。
-    //    public static String getOptionTitleStr(Pet pet) {
-    //        if (isDog(pet)) {
-    //            return "散歩場所";
-    //        } else if (isCat(pet)) {
-    //            return "お気に入り遊具";
-    //        } else {
-    //            return "-";
-    //        }
-    //    }
+       public static String getOptionTitleStr(Pet pet) {
+            if (isDog(pet)) {
+                return "散歩場所";
+            } else if (isCat(pet)) {
+                return "お気に入り遊具";
+            } else {
+                return "-";
+            }
+        }
+
+       public static boolean isCat(Pet pet) {
+    	    return pet instanceof Cat;
+    	}
+
+	public static boolean isDog(Pet pet) {
+		// TODO 自動生成されたメソッド・スタブ
+		return true;
+	}
 
     /**
      * petInfo.jspの最後の項目の値を取得
@@ -75,15 +88,15 @@ public class PetUtil {
      * @return
      */
     // todo: このメソッドの処理は作成済。必要なクラスがそろえばコメントアウトを戻せば良い。
-    //    public static String getOptionStr(Pet pet) {
-    //        if (isDog(pet)) {
-    //            return ((Dog) pet).getWalkingPlace();
-    //        } else if (isCat(pet)) {
-    //            return ((Cat) pet).getFavoriteItem();
-    //        } else {
-    //            return "-";
-    //        }
-    //    }
+        public static String getOptionStr(Pet pet) {
+            if (isDog(pet)) {
+                return ((Dog) pet).getWalkingPlace();
+            } else if (isCat(pet)) {
+               return ((Cat) pet).getFavoriteItem();
+            } else {
+                return "-";
+            }
+        }
 
     /**
      * 引数で受け取ったオブジェクトの型がDogかを判定

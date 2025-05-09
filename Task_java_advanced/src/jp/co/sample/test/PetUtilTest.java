@@ -4,11 +4,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-// todo:必要な処理実装後、コメントアウトを外してテストする。
-//import jp.co.sample.pet.Cat;
-//import jp.co.sample.pet.Dog;
-//import jp.co.sample.util.PetUtil;
-
+import jp.co.sample.pet.Cat;
+import jp.co.sample.pet.Dog;
+import jp.co.sample.util.PetUtil;
 /**
  * PetUtilクラスのテストケース
  */
@@ -22,114 +20,114 @@ public class PetUtilTest {
     }
 
     // todo:必要な処理実装後、コメントアウトを外してテストする。
-    //    @Test
-    //    public void isNullOrEmptyTest1() {
-    //        String str = "a";
+      @Test
+        public void isNullOrEmptyTest1() {
+            String str = "a";
+    
+            boolean result = PetUtil.isNullOrEmpty(str);
+            boolean expected = false;
+    
+            assertEquals(expected, result);
+        }
     //
-    //        boolean result = PetUtil.isNullOrEmpty(str);
-    //        boolean expected = false;
+        @Test
+        public void isNullOrEmptyTest2() {
+            String str = "";
+    
+            boolean result = PetUtil.isNullOrEmpty(str);
+            boolean expected = true;
+    
+            assertEquals(expected, result);
+        }
     //
-    //        assertEquals(expected, result);
-    //    }
+        @Test
+        public void isNullOrEmptyTest3() {
+            String str = null;
+   
+            boolean result = PetUtil.isNullOrEmpty(str);
+            boolean expected = true;
+    
+            assertEquals(expected, result);
+       }
     //
-    //    @Test
-    //    public void isNullOrEmptyTest2() {
-    //        String str = "";
+        @Test
+        public void isNumberTest1() {
+            String str = "1234";
+    
+            boolean result = PetUtil.isNumber(str);
+            boolean expected = true;
+    
+            assertEquals(expected, result);
+        }
     //
-    //        boolean result = PetUtil.isNullOrEmpty(str);
-    //        boolean expected = true;
+       @Test
+        public void isNumberTest2() {
+            String str = "abc";
+    
+            boolean result = PetUtil.isNumber(str);
+            boolean expected = false;
+    
+            assertEquals(expected, result);
+        }
     //
-    //        assertEquals(expected, result);
-    //    }
+       @Test
+        public void checkAndParseIntTest1() {
+          String str = "1234";
+    
+            Integer result = PetUtil.checkAndParseInt(str);
+            Integer expected = 1234;
+    
+            assertEquals(expected, result);
+       }
     //
-    //    @Test
-    //    public void isNullOrEmptyTest3() {
-    //        String str = null;
+       @Test
+        public void checkAndParseIntTest2() {
+            String str = "abc";
+    
+            Integer result = PetUtil.checkAndParseInt(str);
+            Integer expected = null;
+    
+    assertEquals(expected, result);
+        }
     //
-    //        boolean result = PetUtil.isNullOrEmpty(str);
-    //        boolean expected = true;
+       @Test
+        public void getOptionTitleStrTest1() {
+            Dog dog = new Dog();
+    
+            String result = PetUtil.getOptionTitleStr(dog);
+            String expected = "散歩場所";
+    
+            assertEquals(expected, result);
+        }
     //
-    //        assertEquals(expected, result);
-    //    }
+       @Test
+        public void getOptionTitleStrTest2() {
+            Cat cat = new Cat();
+    
+            String result = PetUtil.getOptionTitleStr(cat);
+            String expected = "散歩場所";
+    
+            assertEquals(expected, result);
+        }
     //
-    //    @Test
-    //    public void isNumberTest1() {
-    //        String str = "1234";
+        @Test
+        public void getOptionTitleStrTest3() {
+            String result = PetUtil.getOptionTitleStr(null);
+            String expected = "散歩場所";
+    
+            assertEquals(expected, result);
+        }
     //
-    //        boolean result = PetUtil.isNumber(str);
-    //        boolean expected = true;
-    //
-    //        assertEquals(expected, result);
-    //    }
-    //
-    //    @Test
-    //    public void isNumberTest2() {
-    //        String str = "abc";
-    //
-    //        boolean result = PetUtil.isNumber(str);
-    //        boolean expected = false;
-    //
-    //        assertEquals(expected, result);
-    //    }
-    //
-    //    @Test
-    //    public void checkAndParseIntTest1() {
-    //        String str = "1234";
-    //
-    //        Integer result = PetUtil.checkAndParseInt(str);
-    //        Integer expected = 1234;
-    //
-    //        assertEquals(expected, result);
-    //    }
-    //
-    //    @Test
-    //    public void checkAndParseIntTest2() {
-    //        String str = "abc";
-    //
-    //        Integer result = PetUtil.checkAndParseInt(str);
-    //        Integer expected = null;
-    //
-    //        assertEquals(expected, result);
-    //    }
-    //
-    //    @Test
-    //    public void getOptionTitleStrTest1() {
-    //        Dog dog = new Dog();
-    //
-    //        String result = PetUtil.getOptionTitleStr(dog);
-    //        String expected = "散歩場所";
-    //
-    //        assertEquals(expected, result);
-    //    }
-    //
-    //    @Test
-    //    public void getOptionTitleStrTest2() {
-    //        Cat cat = new Cat();
-    //
-    //        String result = PetUtil.getOptionTitleStr(cat);
-    //        String expected = "お気に入り遊具";
-    //
-    //        assertEquals(expected, result);
-    //    }
-    //
-    //    @Test
-    //    public void getOptionTitleStrTest3() {
-    //        String result = PetUtil.getOptionTitleStr(null);
-    //        String expected = "-";
-    //
-    //        assertEquals(expected, result);
-    //    }
-    //
-    //    @Test
-    //    public void getOptionStrTest1() {
-    //        Dog dog = new Dog();
-    //        dog.setWalkingPlace("代々木公園");
-    //
-    //        String result = PetUtil.getOptionStr(dog);
-    //        String expected = "代々木公園";
-    //
-    //        assertEquals(expected, result);
-    //    }
+        @Test
+        public void getOptionStrTest1() {
+            Dog dog = new Dog();
+            dog.setWalkingPlace("代々木公園");
+    
+            String result = PetUtil.getOptionStr(dog);
+            String expected = "代々木公園";
+    
+            assertEquals(expected, result);
+        }
     //
     //    @Test
     //    public void getOptionStrTest2() {
