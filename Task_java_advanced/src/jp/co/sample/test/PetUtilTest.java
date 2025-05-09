@@ -105,7 +105,7 @@ public class PetUtilTest {
             Cat cat = new Cat();
     
             String result = PetUtil.getOptionTitleStr(cat);
-            String expected = "散歩場所";
+            String expected = "お気に入り遊具";
     
             assertEquals(expected, result);
         }
@@ -113,7 +113,7 @@ public class PetUtilTest {
         @Test
         public void getOptionTitleStrTest3() {
             String result = PetUtil.getOptionTitleStr(null);
-            String expected = "散歩場所";
+            String expected = "-";
     
             assertEquals(expected, result);
         }
@@ -129,60 +129,60 @@ public class PetUtilTest {
             assertEquals(expected, result);
         }
     //
-    //    @Test
-    //    public void getOptionStrTest2() {
-    //        Cat cat = new Cat();
-    //        cat.setFavoriteItem("猫じゃらし");
+        @Test
+        public void getOptionStrTest2() {
+            Cat cat = new Cat();
+            cat.setFavoriteItem("猫じゃらし");
+    
+            String result = PetUtil.getOptionStr(cat);
+            String expected = "猫じゃらし";
+    
+            assertEquals(expected, result);
+        }
     //
-    //        String result = PetUtil.getOptionStr(cat);
-    //        String expected = "猫じゃらし";
+       @Test
+        public void getOptionStrTest3() {
+            String result = PetUtil.getOptionStr(null);
+            String expected = "-";
+    
+            assertEquals(expected, result);
+        }
     //
-    //        assertEquals(expected, result);
-    //    }
+        @Test
+        public void isDogTest1() {
+            Dog dog = new Dog();
+            boolean result = PetUtil.isDog(dog);
+            boolean expected = true;
+    
+            assertEquals(expected, result);
+        }
     //
-    //    @Test
-    //    public void getOptionStrTest3() {
-    //        String result = PetUtil.getOptionStr(null);
-    //        String expected = "-";
+        @Test
+        public void isDogTest2() {
+            Cat cat = new Cat();
+            boolean result = PetUtil.isDog(cat);
+            boolean expected = false;
+    
+            assertEquals(expected, result);
+        }
     //
-    //        assertEquals(expected, result);
-    //    }
+        @Test
+        public void isCatTest1() {
+            Cat cat = new Cat();
+            boolean result = PetUtil.isCat(cat);
+            boolean expected = true;
+    
+            assertEquals(expected, result);
+        }
     //
-    //    @Test
-    //    public void isDogTest1() {
-    //        Dog dog = new Dog();
-    //        boolean result = PetUtil.isDog(dog);
-    //        boolean expected = true;
-    //
-    //        assertEquals(expected, result);
-    //    }
-    //
-    //    @Test
-    //    public void isDogTest2() {
-    //        Cat cat = new Cat();
-    //        boolean result = PetUtil.isDog(cat);
-    //        boolean expected = false;
-    //
-    //        assertEquals(expected, result);
-    //    }
-    //
-    //    @Test
-    //    public void isCatTest1() {
-    //        Cat cat = new Cat();
-    //        boolean result = PetUtil.isCat(cat);
-    //        boolean expected = true;
-    //
-    //        assertEquals(expected, result);
-    //    }
-    //
-    //    @Test
-    //    public void isCatTest2() {
-    //        Dog dog = new Dog();
-    //        boolean result = PetUtil.isCat(dog);
-    //        boolean expected = false;
-    //
-    //        assertEquals(expected, result);
-    //    }
+        @Test
+        public void isCatTest2() {
+            Dog dog = new Dog();
+            boolean result = PetUtil.isCat(dog);
+            boolean expected = false;
+    
+            assertEquals(expected, result);
+        }
 
     // todo：※ここからは発展課題用のテストメソッド
     //    @Test

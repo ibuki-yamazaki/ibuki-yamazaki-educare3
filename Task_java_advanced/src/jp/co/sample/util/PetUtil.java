@@ -77,10 +77,9 @@ public class PetUtil {
     	    return pet instanceof Cat;
     	}
 
-	public static boolean isDog(Pet pet) {
-		// TODO 自動生成されたメソッド・スタブ
-		return true;
-	}
+       public static boolean isDog(Pet pet) {
+    	    return pet instanceof Dog;
+    	}
 
     /**
      * petInfo.jspの最後の項目の値を取得
