@@ -2,7 +2,7 @@
 <%@ page language="java" %>
 <%@ page import="model.Product" %>
 <%@ page import="java.util.List" %>
-<%@ page import="model.ProductDAO" %>
+<%@ page import="model.ProductDao" %>
 <%@ page import="model.Product" %>
 <%@ page import="java.util.List" %>
 

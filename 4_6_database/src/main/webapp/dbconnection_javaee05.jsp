@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ page import="model.Product" %>
-<%@ page import="model.ProductDAO" %>
+<%@ page import="model.ProductDao" %>
 <%@ page import="model.Product" %>
 <%@ page import="java.util.List" %>
     

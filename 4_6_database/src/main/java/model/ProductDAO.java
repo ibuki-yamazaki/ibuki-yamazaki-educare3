@@ -1,96 +1,72 @@
 package model;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ProductDAO {
-    private static List<Product> products = new ArrayList<>();
-
-    static {
-        products.add(new Product(101, "鉛筆", 50));
-        products.add(new Product(102, "消しゴム", 100));
-        products.add(new Product(103, "地球儀", 5000));
-    }
+    // DB接続情報（環境に合わせて変更）
+    private static final String URL = "jdbc:mysql://localhost:3306/dbconnection?serverTimezone=UTC";
+    private static final String USER = "hogeuser";
+    private static final String PASS = "hoge";
 
     // 全件取得
-    public List<Product> findAll() {
-        return new ArrayList<>(products);
-    }
+    public List<Product> findAll() throws Exception {
+        List<Product> list = new ArrayList<>();
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        try (Connection con = DriverManager.getConnection(URL, USER, PASS);
+             PreparedStatement st = con.prepareStatement("SELECT * FROM products");
+             ResultSet rs = st.executeQuery()) {
 
-    // 登録（idは最大値+1で自動採番）
-    public void addProduct(String name, int price) {
-        int maxId = products.stream().mapToInt(Product::getId).max().orElse(100);
-        products.add(new Product(maxId + 1, name, price));
-    }
-
-    // 検索
-    public List<Product> search(String idStr, String name, String priceStr) {
-        List<Product> result = new ArrayList<>();
-        for (Product p : products) {
-            boolean match = true;
-            if (idStr != null && !idStr.isEmpty()) {
-                try {
-                    int id = Integer.parseInt(idStr);
-                    if (p.getId() != id) match = false;
-                } catch (NumberFormatException e) { match = false; }
-            }
-            if (name != null && !name.isEmpty() && !p.getName().contains(name)) match = false;
-            if (priceStr != null && !priceStr.isEmpty()) {
-                try {
-                    int price = Integer.parseInt(priceStr);
-                    if (p.getPrice() != price) match = false;
-                } catch (NumberFormatException e) { match = false; }
-            }
-            if (match) result.add(p);
-        }
-        return result;
-    }
-
-    // 更新（idで検索しname, priceを更新）
-    public boolean updateProduct(int id, String name, int price) {
-        for (Product p : products) {
-            if (p.getId() == id) {
-                p.setName(name);
-                p.setPrice(price);
-                return true;
+            while (rs.next()) {
+                Product p = new Product();
+                p.setId(rs.getInt("id"));
+                p.setName(rs.getString("name"));
+                p.setPrice(rs.getInt("price"));
+                list.add(p);
             }
         }
-        return false;
+        return list;
     }
- // 登録または更新
-    public void registerOrUpdate(String idStr, String name, String priceStr) {
-        if (name == null || name.isEmpty() || priceStr == null || priceStr.isEmpty()) return;
-        int price;
-        try {
-            price = Integer.parseInt(priceStr);
-        } catch (NumberFormatException e) {
-            return;
-        }
 
-        // idが入力されていて、既存なら更新
-        if (idStr != null && !idStr.isEmpty()) {
-            try {
-                int id = Integer.parseInt(idStr);
-                for (Product p : products) {
-                    if (p.getId() == id) {
-                        p.setName(name);
-                        p.setPrice(price);
-                        return;
-                    }
+    // 1件追加（例）
+    public void insert(Product p) throws Exception {
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        try (Connection con = DriverManager.getConnection(URL, USER, PASS);
+             PreparedStatement st = con.prepareStatement("INSERT INTO product (name, price) VALUES (?, ?)")) {
+            st.setString(1, p.getName());
+            st.setInt(2, p.getPrice());
+            st.executeUpdate();
+        }
+    }
+
+    public List<Product> search(String id, String name, String price) throws Exception {
+        List<Product> list = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("SELECT * FROM product WHERE 1=1");
+        if (id != null && !id.isEmpty()) sql.append(" AND id = ?");
+        if (name != null && !name.isEmpty()) sql.append(" AND name LIKE ?");
+        if (price != null && !price.isEmpty()) sql.append(" AND price = ?");
+
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        try (Connection con = DriverManager.getConnection(URL, USER, PASS);
+             PreparedStatement st = con.prepareStatement(sql.toString())) {
+            int idx = 1;
+            if (id != null && !id.isEmpty()) st.setInt(idx++, Integer.parseInt(id));
+            if (name != null && !name.isEmpty()) st.setString(idx++, "%" + name + "%");
+            if (price != null && !price.isEmpty()) st.setInt(idx++, Integer.parseInt(price));
+            try (ResultSet rs = st.executeQuery()) {
+                while (rs.next()) {
+                    Product p = new Product();
+                    p.setId(rs.getInt("id"));
+                    p.setName(rs.getString("name"));
+                    p.setPrice(rs.getInt("price"));
+                    list.add(p);
                 }
-                // idが存在しない場合は新規登録（id指定で）
-                products.add(new Product(id, name, price));
-                return;
-            } catch (NumberFormatException e) {
-                // 無効なidは無視
-                return;
             }
         }
-        // id未入力の場合は自動採番
-        int maxId = products.stream().mapToInt(Product::getId).max().orElse(100);
-        products.add(new Product(maxId + 1, name, price));
-    }
-    public boolean deleteProductById(int id) {
-        return products.removeIf(p -> p.getId() == id);
+        return list;
     }
 }
