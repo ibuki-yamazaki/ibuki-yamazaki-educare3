@@ -2,7 +2,7 @@ package model;
 
 
 public class Product {
-    private int id;
+    private Integer id;
     private String name;
     private int price;
 
@@ -17,10 +17,10 @@ public class Product {
     }
 
     // Getter & Setter
-    public int getId() {
+    public Integer getId() {
         return id;
     }
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -31,13 +31,16 @@ public class Product {
         this.name = name;
     }
 
-    public int getPrice() {
+    public Integer getPrice() {
         return price;
     }
-    public void setPrice(int price) {
-        this.price = price;
+    public void setPrice(Integer price) {
+        if (price != null) {
+            this.price = price;
+        } else {
+        	throw new IllegalArgumentException("価格が未入力です");// または throw new IllegalArgumentException("価格が未入力です");
+        }
     }
-
     // toString（確認用に便利）
     @Override
     public String toString() {

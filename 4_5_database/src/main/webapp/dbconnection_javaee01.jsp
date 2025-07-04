@@ -22,7 +22,7 @@
     </form>
 
     <%
-    List<Product> list = (List<Product>)request.getAttribute("productList");
+    List<Product> list = (List<Product>)request.getAttribute("list");
             if (list != null && !list.isEmpty()) {
     %>
     <table border="1">

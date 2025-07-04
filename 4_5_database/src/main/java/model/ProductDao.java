@@ -51,6 +51,8 @@ public class ProductDao {
             try { if (con != null) con.close(); } catch (Exception e) {}
         }
     }
+    
+    
 
     // 更新メソッド（idで更新）
     public void update(Product Product) {
@@ -111,43 +113,38 @@ public class ProductDao {
     }
     
     
-    public List<Product> find(Product condition) {
+ // 検索
+    public List<Product> find( Product condition) throws Exception {
         List<Product> resultList = new ArrayList<>();
-        Connection con = null;
+        Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
-
         try {
-            Class.forName("org.postgresql.Driver");
-            con = DriverManager.getConnection("jdbc:postgresql:dbconnection", "hogeuser", "hoge");
-
-            // SQL構築（WHERE条件を動的に）
+        	Class.forName("org.postgresql.Driver");
+            conn = DriverManager.getConnection("jdbc:postgresql:dbconnection", "hogeuser", "hoge");
+            
             StringBuilder sql = new StringBuilder("SELECT * FROM products WHERE 1=1");
             List<Object> parameters = new ArrayList<>();
 
-            if (condition.getId() != 0) {
+            if (condition.getId() != null) {
                 sql.append(" AND id = ?");
                 parameters.add(condition.getId());
             }
-            if (condition.getName() != null) {
+            if (condition.getName() != null && !condition.getName().isEmpty()) {
                 sql.append(" AND name = ?");
                 parameters.add(condition.getName());
             }
-            if (condition.getPrice() != 0) {
+            if (condition.getPrice() != null) {
                 sql.append(" AND price = ?");
                 parameters.add(condition.getPrice());
             }
 
-            stmt = con.prepareStatement(sql.toString());
-
-            // パラメータをバインド
+            stmt = conn.prepareStatement(sql.toString());
             for (int i = 0; i < parameters.size(); i++) {
                 stmt.setObject(i + 1, parameters.get(i));
             }
 
             rs = stmt.executeQuery();
-
-            // 結果をListに整形
             while (rs.next()) {
                 Product p = new Product();
                 p.setId(rs.getInt("id"));
@@ -156,12 +153,10 @@ public class ProductDao {
                 resultList.add(p);
             }
 
-        } catch (Exception e) {
-            e.printStackTrace();
         } finally {
             try { if (rs != null) rs.close(); } catch (Exception e) {}
             try { if (stmt != null) stmt.close(); } catch (Exception e) {}
-            try { if (con != null) con.close(); } catch (Exception e) {}
+            try { if (conn != null) conn.close(); } catch (Exception e) {}
         }
 
         return resultList;
