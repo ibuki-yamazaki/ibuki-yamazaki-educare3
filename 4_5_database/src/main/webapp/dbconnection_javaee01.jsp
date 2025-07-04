@@ -2,15 +2,16 @@
 <%@ page language="java" %>
 <%@ page import="model.Product" %>
 <%@ page import="java.util.List" %>
-<%@ page import="model.ProductDao" %>
-<%@ page import="model.Product" %>
 
+<!DOCTYPE html>
 <html>
 <head>
- <meta charset="UTF-8">
+    <meta charset="UTF-8">
     <title>商品検索</title>
 </head>
 <body>
+    <h2>商品検索フォーム</h2>
+
     <form action="DBConnection_JavaEE01" method="post">
         <fieldset>
             <legend>検索条件を入力してください</legend>
@@ -21,26 +22,8 @@
         </fieldset>
     </form>
 
-    <%
-    List<Product> list = (List<Product>)request.getAttribute("list");
-            if (list != null && !list.isEmpty()) {
-    %>
-    <table border="1">
-        <tr>
-            <th>id</th><th>name</th><th>price</th>
-        </tr>
-        <%
-            for (Product p : list) {
-        %>
-        <tr>
-            <td><%= p.getId() %></td>
-            <td><%= p.getName() %></td>
-            <td><%= p.getPrice() %></td>
-        </tr>
-        <% } %>
-    </table>
-    <% } else if (list != null) { %>
-        <p>該当する商品はありません。</p>
-    <% } %>
+    <br>
+
+   
 </body>
 </html>

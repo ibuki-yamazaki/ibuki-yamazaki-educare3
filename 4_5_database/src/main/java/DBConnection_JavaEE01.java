@@ -58,10 +58,11 @@ public class DBConnection_JavaEE01 extends HttpServlet {
             if (idStr != null && !idStr.isEmpty()) {
                 id = Integer.parseInt(idStr);
             }
-            if (priceStr != null && !priceStr.isEmpty()) {
-                price = Integer.parseInt(priceStr);
-               
+            if (priceStr == null || priceStr.trim().isEmpty()) {
+                throw new IllegalArgumentException("価格が未入力です");
             }
+            price = Integer.parseInt(priceStr);
+
 
             // Productオブジェクト生成
             Product product = new Product();
