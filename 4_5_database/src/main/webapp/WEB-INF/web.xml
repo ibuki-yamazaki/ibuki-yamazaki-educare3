@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee 
@@ -9,19 +10,9 @@
     <display-name>商品検索システム</display-name>
     <description>PostgreSQLデータベースを使用した商品検索システム</description>
     
-    <!-- サーブレット定義 -->
-    <servlet>
-        <servlet-name>DBConnection_JavaEE01</servlet-name>
-        <servlet-class>com.example.servlet.DBConnection_JavaEE01</servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
+   
     
-    <!-- サーブレットマッピング -->
-    <servlet-mapping>
-        <servlet-name>DBConnection_JavaEE01</servlet-name>
-        <url-pattern>/DBConnection_JavaEE01</url-pattern>
-    </servlet-mapping>
-    
+   
     <!-- ウェルカムファイル -->
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
