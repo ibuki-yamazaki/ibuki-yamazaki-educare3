@@ -27,6 +27,8 @@ public class ProductDaoTest {
 
         for (Product a : list) {
             System.out.println(p.getId() + " / " + p.getName() + " / " + p.getPrice());
+            
+            
         }
     }
     

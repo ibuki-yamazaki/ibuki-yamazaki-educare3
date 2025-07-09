@@ -235,19 +235,7 @@ public class ProductDAO {
      * @return 更新された行数
      * @throws SQLException データベースエラー
      */
-    public int update(Product product) throws SQLException {
-        String sql = "UPDATE products SET name = ?, price = ? WHERE id = ?";
-        
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            
-            pstmt.setString(1, product.getName());
-            pstmt.setInt(2, product.getPrice());
-            pstmt.setInt(3, product.getId());
-            
-            return pstmt.executeUpdate();
-        }
-    }
+    
     
     /**
      * 商品を削除
@@ -257,15 +245,14 @@ public class ProductDAO {
      */
     public int delete(int id) throws SQLException {
         String sql = "DELETE FROM products WHERE id = ?";
-        
+
         try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
             
-            pstmt.setInt(1, id);
-            return pstmt.executeUpdate();
+            stmt.setInt(1, id);
+            return stmt.executeUpdate();
         }
     }
-    
     /**
      * 商品数を取得
      * @return 商品の総数
@@ -284,5 +271,75 @@ public class ProductDAO {
         }
         
         return 0;
+    }
+    
+    public void register(Product product) {
+        Connection con = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            Class.forName("org.postgresql.Driver");
+            con = DriverManager.getConnection("jdbc:postgresql:dbconnection", "hogeuser", "hoge");
+            con.setAutoCommit(false);
+
+            String sqlMax = "SELECT id FROM products ORDER BY id DESC LIMIT 1 FOR UPDATE";
+            stmt = con.prepareStatement(sqlMax);
+            rs = stmt.executeQuery();
+
+            int nextId = 1;
+            if (rs.next()) {
+                nextId = rs.getInt("id") + 1;
+            }
+
+            rs.close();
+            stmt.close();
+
+            String sqlInsert = "INSERT INTO products (id, name, price) VALUES (?, ?, ?)";
+            stmt = con.prepareStatement(sqlInsert);
+            stmt.setInt(1, nextId);
+            stmt.setString(2, product.getName());
+            stmt.setInt(3, product.getPrice());
+            stmt.executeUpdate();
+
+            con.commit();
+            System.out.println("登録完了: ID = " + nextId);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            try { if (con != null) con.rollback(); } catch (Exception ex) {}
+        } finally {
+            try { if (rs != null) rs.close(); } catch (Exception e) {}
+            try { if (stmt != null) stmt.close(); } catch (Exception e) {}
+            try { if (con != null) con.close(); } catch (Exception e) {}
+        }
+    }
+    public void update(Product product) {
+        Connection con = null;
+        PreparedStatement stmt = null;
+
+        try {
+            Class.forName("org.postgresql.Driver");
+            con = DriverManager.getConnection("jdbc:postgresql:dbconnection", "hogeuser", "hoge");
+
+            String sql = "UPDATE products SET name = ?, price = ? WHERE id = ?";
+            stmt = con.prepareStatement(sql);
+            stmt.setString(1, product.getName());
+            stmt.setInt(2, product.getPrice());
+            stmt.setInt(3, product.getId());
+
+            int rows = stmt.executeUpdate();
+            if (rows > 0) {
+                System.out.println("更新成功: " + rows + "件");
+            } else {
+                System.out.println("更新対象なし");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try { if (stmt != null) stmt.close(); } catch (Exception e) {}
+            try { if (con != null) con.close(); } catch (Exception e) {}
+        }
     }
 }
