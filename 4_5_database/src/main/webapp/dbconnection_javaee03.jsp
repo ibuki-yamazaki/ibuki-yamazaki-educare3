@@ -137,7 +137,7 @@
                 <div class="form-group">
                     <button type="submit" name="action" value="register" class="register-btn">登録</button>
                     <button type="submit" name="action" value="update" class="update-btn">更新</button>
-                    <button type="submit">更新</button>
+                    <button type="submit">検索</button>
                 </div>
             </form>
         </div>
