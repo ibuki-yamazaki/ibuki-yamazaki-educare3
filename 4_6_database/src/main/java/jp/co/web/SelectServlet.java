@@ -45,13 +45,7 @@ public class SelectServlet extends HttpServlet {
         String userName = request.getParameter("user_name");
         String telephone = request.getParameter("telephone");
         
-        // 入力チェック
-        if ((userName == null || userName.trim().isEmpty()) && 
-            (telephone == null || telephone.trim().isEmpty())) {
-            request.setAttribute("errorMessage", "名前またはTELのいずれかを入力してください");
-            request.getRequestDispatcher("select.jsp").forward(request, response);
-            return;
-        }
+        // 入力チェックを削除 - 何も入力されていない場合も検索を実行
         
         Connection connection = null;
         try {
@@ -97,6 +91,7 @@ public class SelectServlet extends HttpServlet {
     /**
      * ユーザー検索処理
      * 名前、TELのいずれかまたは両方で検索（AND条件）
+     * 何も条件がない場合は全データを取得
      */
     private List<UserInfoDto> searchUsers(Connection connection, String user_name, String telephone) 
             throws SQLException {

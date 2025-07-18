@@ -10,6 +10,7 @@
 
 <p>検索したいデータ情報を入力してください</p>
 <p>適合する全ての要員を全検索を行います</p>
+<p>※検索条件を入力しない場合は全データを表示します</p>
 
 <form action="SelectServlet" method="post">
 <table>

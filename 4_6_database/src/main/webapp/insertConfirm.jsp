@@ -46,9 +46,21 @@
             font-size: 14px;
             box-sizing: border-box;
         }
-        .password-field {
-            color: #999;
-            font-style: italic;
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+        }
+        .required {
+            color: red;
         }
         .button-group {
             text-align: center;
@@ -100,6 +112,14 @@
         .menu-link a:hover {
             text-decoration: underline;
         }
+        .error-message {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
@@ -110,7 +130,14 @@
             これでよろしいですか？
         </div>
         
-        <form action="InsertServlet" method="post">
+        <!-- エラーメッセージの表示 -->
+        <% if (request.getAttribute("errorMessage") != null) { %>
+            <div class="error-message">
+                <%= request.getAttribute("errorMessage") %>
+            </div>
+        <% } %>
+        
+        <form action="InsertConfirmServlet" method="post">
             <div class="form-group">
                 <label for="loginId">ID</label>
                 <div class="form-value">${loginId}</div>
@@ -136,8 +163,8 @@
             </div>
             
             <div class="form-group">
-                <label for="password">PASS（再入力）</label>
-                <div class="form-value password-field">*****</div>
+                <label for="passwordConfirm">PASS（再入力） <span class="required">*</span></label>
+                <input type="password" id="passwordConfirm" name="passwordConfirm" required>
                 <input type="hidden" name="password" value="${password}" />
             </div>
             

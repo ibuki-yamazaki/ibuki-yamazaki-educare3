@@ -1,10 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="jp.co.web.UserInfoDto" %>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ユーザー登録完了画面</title>
+    <title>登録完了画面</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -16,57 +17,55 @@
             max-width: 500px;
             margin: 0 auto;
             background-color: white;
-            padding: 50px 30px;
+            padding: 30px;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            text-align: center;
         }
         h1 {
-            color: #28a745;
+            color: #333;
+            text-align: center;
             margin-bottom: 30px;
-            font-size: 28px;
+            font-size: 24px;
         }
         .success-message {
             background-color: #d4edda;
             border: 1px solid #c3e6cb;
             color: #155724;
             padding: 20px;
-            border-radius: 4px;
+            border-radius: 8px;
             margin-bottom: 30px;
-            font-size: 18px;
-            font-weight: bold;
+            text-align: center;
         }
         .user-info {
             background-color: #f8f9fa;
             border: 1px solid #dee2e6;
             padding: 20px;
-            border-radius: 4px;
+            border-radius: 8px;
             margin-bottom: 30px;
-            text-align: left;
-        }
-        .user-info h3 {
-            margin-top: 0;
-            color: #495057;
-            text-align: center;
         }
         .info-row {
             display: flex;
             margin-bottom: 10px;
             padding: 8px 0;
-            border-bottom: 1px solid #dee2e6;
+            border-bottom: 1px solid #e9ecef;
         }
         .info-row:last-child {
             border-bottom: none;
+            margin-bottom: 0;
         }
         .info-label {
             font-weight: bold;
             color: #495057;
             width: 80px;
-            margin-right: 20px;
+            flex-shrink: 0;
         }
         .info-value {
+            color: #212529;
             flex: 1;
-            color: #333;
+        }
+        .button-group {
+            text-align: center;
+            margin-top: 30px;
         }
         .btn {
             padding: 12px 30px;
@@ -86,27 +85,54 @@
         .btn-primary:hover {
             background-color: #0056b3;
         }
-        .menu-link {
-            display: block;
-            margin-top: 20px;
-            color: #007bff;
-            text-decoration: none;
+        .completion-icon {
+            text-align: center;
+            margin-bottom: 20px;
         }
-        .menu-link:hover {
-            text-decoration: underline;
+        .completion-icon::before {
+            content: "✓";
+            font-size: 48px;
+            color: #28a745;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .registered-user {
+            font-size: 18px;
+            font-weight: bold;
+            color: #007bff;
+            margin-bottom: 10px;
+        }
+        .completion-text {
+            font-size: 16px;
+            color: #155724;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>登録完了</h1>
+        <h1>登録完了画面</h1>
         
         <div class="success-message">
-            正常に登録されました
+            <div class="completion-icon"></div>
+            <div class="registered-user">
+                実行者：
+                <% 
+                    // セッションからログインユーザー情報を取得
+                    UserInfoDto loginUser = (UserInfoDto) session.getAttribute("loginUser");
+                    if (loginUser != null) {
+                        out.print(loginUser.getUserName());
+                    } else {
+                        out.print("不明");
+                    }
+                %>
+            </div>
+            <div class="completion-text">
+                正常に登録されました
+            </div>
         </div>
         
         <div class="user-info">
-            <h3>登録者：${userName}</h3>
             <div class="info-row">
                 <div class="info-label">ID：</div>
                 <div class="info-value">${loginId}</div>
@@ -125,15 +151,9 @@
             </div>
         </div>
         
-        <button class="btn btn-primary" onclick="goToMenu()">メニューに戻る</button>
-        
-        <a href="menu.jsp" class="menu-link">メニュー</a>
+        <div class="button-group">
+            <a href="menu.jsp" class="btn btn-primary">メニューに戻る</a>
+        </div>
     </div>
-    
-    <script>
-        function goToMenu() {
-            window.location.href = 'menu.jsp';
-        }
-    </script>
 </body>
 </html>

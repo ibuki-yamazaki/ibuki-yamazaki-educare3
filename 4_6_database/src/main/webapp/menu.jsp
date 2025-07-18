@@ -392,7 +392,7 @@
                 
                 <!-- 管理者のみアクセス可能 -->
                 <% if (isAdmin) { %>
-                    <a href="insert.jsp" class="menu-item admin-only">
+                    <a href="InsertServlet" class="menu-item admin-only">
                         <span class="icon">➕</span>
                         ユーザー登録
                     </a>

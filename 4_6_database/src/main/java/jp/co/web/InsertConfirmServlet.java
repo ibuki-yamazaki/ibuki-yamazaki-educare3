@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 @WebServlet("/InsertConfirmServlet")
 public class InsertConfirmServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
@@ -29,6 +28,7 @@ public class InsertConfirmServlet extends HttpServlet {
         String userName = request.getParameter("userName");
         String telephone = request.getParameter("telephone");
         String password = request.getParameter("password");
+        String passwordConfirm = request.getParameter("passwordConfirm");
         String roleIdStr = request.getParameter("roleId");
         
         Connection connection = null;
@@ -39,6 +39,25 @@ public class InsertConfirmServlet extends HttpServlet {
             // RoleDaoを使用してロール一覧を取得
             RoleDao roleDao = new RoleDao(connection);
             List<RoleDto> roles = roleDao.findAll();
+            
+            // パスワード確認のバリデーション
+            if (passwordConfirm != null && !passwordConfirm.equals(password)) {
+                request.setAttribute("errorMessage", "前画面で入力したパスワードと一致しません");
+                request.setAttribute("loginId", loginId);
+                request.setAttribute("userName", userName);
+                request.setAttribute("telephone", telephone);
+                request.setAttribute("password", password);
+                request.setAttribute("roleId", roleIdStr);
+                
+                // ロール名を取得
+                int roleId = Integer.parseInt(roleIdStr);
+                RoleDto role = roleDao.findById(roleId);
+                String roleName = role != null ? role.getRoleName() : "";
+                request.setAttribute("roleName", roleName);
+                
+                request.getRequestDispatcher("/insertConfirm.jsp").forward(request, response);
+                return;
+            }
             
             // 入力チェック
             StringBuilder errorMessages = new StringBuilder();
@@ -68,7 +87,7 @@ public class InsertConfirmServlet extends HttpServlet {
                 request.setAttribute("telephone", telephone);
                 request.setAttribute("roleId", roleIdStr);
                 request.setAttribute("roles", roles);
-                request.getRequestDispatcher("insert.jsp").forward(request, response);
+                request.getRequestDispatcher("/insert.jsp").forward(request, response);
                 return;
             }
             
@@ -91,7 +110,7 @@ public class InsertConfirmServlet extends HttpServlet {
                 request.setAttribute("telephone", telephone);
                 request.setAttribute("roleId", roleIdStr);
                 request.setAttribute("roles", roles);
-                request.getRequestDispatcher("insert.jsp").forward(request, response);
+                request.getRequestDispatcher("/insert.jsp").forward(request, response);
                 return;
             }
             
@@ -104,16 +123,46 @@ public class InsertConfirmServlet extends HttpServlet {
             RoleDto role = roleDao.findById(roleId);
             String roleName = role != null ? role.getRoleName() : "";
             
-            // 確認画面に渡すデータをセット
-            request.setAttribute("loginId", loginId.trim());
-            request.setAttribute("userName", userName.trim());
-            request.setAttribute("telephone", telephone.trim());
-            request.setAttribute("password", password);
-            request.setAttribute("roleId", roleId);
-            request.setAttribute("roleName", roleName);
+            // パスワード確認がnull（初回表示）の場合は確認画面を表示
+            if (passwordConfirm == null) {
+                // 確認画面に渡すデータをセット
+                request.setAttribute("loginId", loginId.trim());
+                request.setAttribute("userName", userName.trim());
+                request.setAttribute("telephone", telephone.trim());
+                request.setAttribute("password", password);
+                request.setAttribute("roleId", roleId);
+                request.setAttribute("roleName", roleName);
+                
+                // 確認画面を表示
+                request.getRequestDispatcher("/insertConfirm.jsp").forward(request, response);
+                return;
+            }
             
-            // 確認画面を表示
-            request.getRequestDispatcher("insertConfirm.jsp").forward(request, response);
+            // パスワードが一致した場合、データベースに登録
+            UserInfoDto newUser = new UserInfoDto();
+            newUser.setLoginId(loginId.trim());
+            newUser.setUserName(userName.trim());
+            newUser.setTelephone(telephone.trim());
+            newUser.setPassword(password); // 実際のシステムではパスワードのハッシュ化が必要
+            newUser.setRoleId(roleId);
+            
+            boolean insertSuccess = userDao.insert(newUser);
+            
+            if (insertSuccess) {
+                // 登録成功の場合、完了画面に表示するデータをセット
+                request.setAttribute("loginId", loginId.trim());
+                request.setAttribute("userName", userName.trim());
+                request.setAttribute("telephone", telephone.trim());
+                request.setAttribute("roleName", roleName);
+                
+                // 完了画面へフォワード
+                request.getRequestDispatcher("/insertResult.jsp").forward(request, response);
+            } else {
+                // 登録失敗の場合
+                request.setAttribute("errorMessage", "ユーザー登録に失敗しました。再度お試しください。");
+                request.setAttribute("roles", roles);
+                request.getRequestDispatcher("/insert.jsp").forward(request, response);
+            }
             
         } catch (SQLException e) {
             // データベースエラーの場合
@@ -137,7 +186,7 @@ public class InsertConfirmServlet extends HttpServlet {
                 ex.printStackTrace();
             }
             
-            request.getRequestDispatcher("insert.jsp").forward(request, response);
+            request.getRequestDispatcher("/insert.jsp").forward(request, response);
             
         } finally {
             // データベース接続を閉じる
