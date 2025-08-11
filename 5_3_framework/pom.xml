@@ -69,7 +69,26 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
 <artifactId>spring-boot-starter-tomcat</artifactId>
 <scope>provided</scope>
 </dependency>
+<!-- Validation API -->
+<dependency>
+    <groupId>jakarta.validation</groupId>
+    <artifactId>jakarta.validation-api</artifactId>
+    <version>3.0.2</version>
+</dependency>
 
+<!-- 実装ライブラリ（Hibernate Validator） -->
+<dependency>
+    <groupId>org.hibernate.validator</groupId>
+    <artifactId>hibernate-validator</artifactId>
+    <version>8.0.1.Final</version>
+</dependency>
+
+<!-- Expression Language (EL) support -->
+<dependency>
+    <groupId>org.glassfish</groupId>
+    <artifactId>jakarta.el</artifactId>
+    <version>4.0.2</version>
+</dependency>
 <!-- Jakarta EE対応のJSTL依存関係（古いJava EE版を削除して置き換え） -->
 <dependency>
 <groupId>org.glassfish.web</groupId>
@@ -100,6 +119,11 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
     <dependency>
         <groupId>org.glassfish.web</groupId>
         <artifactId>jakarta.servlet.jsp.jstl</artifactId>
+    </dependency>
+    <dependency>
+    	<groupId>jp.co.example</groupId>
+    	<artifactId>Spring-validation</artifactId>
+    	<version>0.0.1-SNAPSHOT</version>
     </dependency>
 </dependencies>
 

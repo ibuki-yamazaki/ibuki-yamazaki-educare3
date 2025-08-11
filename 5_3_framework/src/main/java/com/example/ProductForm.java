@@ -1,7 +1,14 @@
 package com.example;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+
 public class ProductForm {
+    @NotBlank(message = "{validation.name.required}")
     private String name;
+    
+    @NotBlank(message = "{validation.price.required}")
+    @Pattern(regexp = "^[0-9]+$", message = "{validation.price.format}")
     private String price;
     
     public ProductForm() {}
@@ -34,7 +41,8 @@ public class ProductForm {
             return null;
         }
         try {
-            return Integer.parseInt(price.trim());
+            Integer parsedPrice = Integer.parseInt(price.trim());
+            return parsedPrice > 0 ? parsedPrice : null;
         } catch (NumberFormatException e) {
             return null;
         }

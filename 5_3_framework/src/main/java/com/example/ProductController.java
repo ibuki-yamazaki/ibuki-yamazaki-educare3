@@ -1,21 +1,28 @@
 package com.example;
 
 import java.util.List;
+import java.util.Locale;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-
-
 @Controller
 @RequestMapping("/products")
 public class ProductController {
     
-    private ProductDao productDao = new ProductDao();
+    @Autowired
+    private ProductDao productDao;
+    
+    @Autowired
+    private MessageSource messageSource;
     
     // トップ画面を表示
     @GetMapping({"", "/"})
@@ -44,24 +51,19 @@ public class ProductController {
     
     // 登録処理
     @PostMapping("/register")
-    public String register(@ModelAttribute ProductForm productForm, Model model) {
-        // 入力値の検証
-        if (productForm.getName() == null || productForm.getName().trim().isEmpty()) {
-            model.addAttribute("error", "商品名を入力してください");
-            model.addAttribute("productForm", productForm);
+    public String register(@Validated @ModelAttribute ProductForm productForm, 
+                          BindingResult bindingResult, Model model, Locale locale) {
+        
+        // バリデーションエラーがある場合
+        if (bindingResult.hasErrors()) {
             return "top";
         }
         
-        if (productForm.getPrice() == null || productForm.getPrice().trim().isEmpty()) {
-            model.addAttribute("error", "価格を入力してください");
-            model.addAttribute("productForm", productForm);
-            return "top";
-        }
-        
+        // 追加のビジネスロジックバリデーション
         Integer price = productForm.getPriceAsInteger();
         if (price == null || price <= 0) {
-            model.addAttribute("error", "正しい価格を入力してください");
-            model.addAttribute("productForm", productForm);
+            String errorMessage = messageSource.getMessage("validation.price.positive", null, locale);
+            model.addAttribute("error", errorMessage);
             return "top";
         }
         
@@ -69,9 +71,11 @@ public class ProductController {
         boolean success = productDao.insert(productForm);
         
         if (success) {
-            model.addAttribute("message", "登録が完了しました");
+            String successMessage = messageSource.getMessage("message.register.success", null, locale);
+            model.addAttribute("message", successMessage);
         } else {
-            model.addAttribute("error", "登録に失敗しました");
+            String errorMessage = messageSource.getMessage("message.register.error", null, locale);
+            model.addAttribute("error", errorMessage);
         }
         
         return "insertResult";

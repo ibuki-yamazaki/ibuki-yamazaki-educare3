@@ -8,18 +8,21 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
+@Repository
 public class ProductDao {
     private static final String DB_URL = "jdbc:postgresql://localhost:5432/dbconnection";
     private static final String DB_USER = "hogeuser";
-    private static final String DB_PASSWORD = "hoge"; // 適切なパスワードに変更してください
+    private static final String DB_PASSWORD = "hoge";
     
     // データベース接続を取得
     private Connection getConnection() throws SQLException {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName("org.postgresql.Driver");
             return DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
         } catch (ClassNotFoundException e) {
-            throw new SQLException("MySQL JDBCドライバーが見つかりません", e);
+            throw new SQLException("PostgreSQL JDBCドライバーが見つかりません", e);
         }
     }
     
@@ -105,7 +108,7 @@ public class ProductDao {
             
             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 pstmt.setInt(1, nextId);
-                pstmt.setString(2, form.getName());
+                pstmt.setString(2, form.getName().trim());
                 pstmt.setInt(3, form.getPriceAsInteger());
                 
                 int result = pstmt.executeUpdate();
