@@ -25,7 +25,7 @@ public class ProductController {
     private MessageSource messageSource;
     
     // トップ画面を表示
-    @GetMapping({"", "/"})
+    @GetMapping({"index", "/"})
     public String index(Model model) {
         model.addAttribute("productForm", new ProductForm());
         return "top";
