@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.ProductForm;
+
 @RequestMapping({ "/", "/index" })
 @Controller
 public class ProductController {
@@ -30,7 +30,7 @@ public class ProductController {
         // フォームのバリデーションエラーがあればエラー表示用データを返す
         if (bindingResult.hasErrors()) {
             model.addAttribute("products", productDao.findAll());
-            return "product/index";
+            return "index";
         }
 
         List<Product> products;
@@ -43,7 +43,7 @@ public class ProductController {
         }
 
         model.addAttribute("products", products);
-        return "product/index";
+        return "index";
     }
 
     @RequestMapping(value="/register", method=RequestMethod.POST)
