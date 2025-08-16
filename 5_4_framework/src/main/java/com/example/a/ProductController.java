@@ -13,29 +13,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
-@RequestMapping({ "/", "/index" })
 @Controller
 public class ProductController {
 
     @Autowired
     private ProductDao productDao;
 
-    @RequestMapping({ "/", "/index" })
-    public String index(@Validated @ModelAttribute("productForm") ProductForm form,
-                        BindingResult bindingResult, // ←追加
-                        Model model,
-                        @RequestParam(value = "searchName", required = false) String searchName) {
+    // トップ画面表示
+    @RequestMapping(value = { "/", "/index" }, method = RequestMethod.GET)
+    public String index(@ModelAttribute("productForm") ProductForm form) {
+        return "index";
+    }
 
-        // フォームのバリデーションエラーがあればエラー表示用データを返す
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("products", productDao.findAll());
-            return "index";
-        }
-
+    // 検索処理 - 一覧画面へ
+    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    public String search(@RequestParam(value = "searchName", required = false) String searchName,
+                        Model model) {
+        
         List<Product> products;
-
-        // 検索処理
         if (StringUtils.hasText(searchName)) {
             products = productDao.findByName(searchName);
         } else {
@@ -43,27 +38,28 @@ public class ProductController {
         }
 
         model.addAttribute("products", products);
-        return "index";
+        model.addAttribute("searchName", searchName);
+        return "list";
     }
 
-    @RequestMapping(value="/register", method=RequestMethod.POST)
+    // 商品登録処理
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String register(@Validated @ModelAttribute("productForm") ProductForm form,
-                           BindingResult bindingResult, // ←ここは既にOK
+                           BindingResult bindingResult,
                            Model model) {
 
         if (bindingResult.hasErrors()) {
-            // バリデーションエラー時は既存一覧を再表示
-            List<Product> products = productDao.findAll();
-            model.addAttribute("products", products);
-            return "product/index";
+            // バリデーションエラー時はトップ画面に戻る（エラーメッセージ付き）
+            model.addAttribute("hasValidationErrors", true);
+            return "index";
         }
 
-        // 商品登録
         Product product = new Product();
         product.setName(form.getName());
         product.setPrice(form.getPrice());
         productDao.insert(product);
 
-        return "redirect:/";
+        // 登録完了画面へ
+        return "complete";
     }
 }

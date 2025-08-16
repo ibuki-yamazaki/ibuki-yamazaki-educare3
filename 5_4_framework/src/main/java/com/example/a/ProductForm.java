@@ -1,14 +1,23 @@
 package com.example.a;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+
 public class ProductForm {
-	@NotBlank(message = "nameは必須です")
+    
+    @NotBlank(message = "{validation.name.required}")
     private String name;
 
-    @NotNull(message = "priceは必須です")
+    @NotNull(message = "{validation.price.required}")
+    @Min(value = 1, message = "{validation.price.min}")
     private Integer price;
 
+    // デフォルトコンストラクタ
+    public ProductForm() {
+    }
+
+    // ゲッター・セッター
     public String getName() {
         return name;
     }
