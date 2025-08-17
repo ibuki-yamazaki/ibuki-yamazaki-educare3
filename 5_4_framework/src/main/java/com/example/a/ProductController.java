@@ -28,17 +28,21 @@ public class ProductController {
     // 検索処理 - 一覧画面へ
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public String search(@RequestParam(value = "searchName", required = false) String searchName,
+                        @RequestParam(value = "searchPrice", required = false) Integer searchPrice,
                         Model model) {
         
         List<Product> products;
-        if (StringUtils.hasText(searchName)) {
-            products = productDao.findByName(searchName);
+        
+        // 検索条件に応じて処理を分岐
+        if (StringUtils.hasText(searchName) || searchPrice != null) {
+            products = productDao.findByNameAndPrice(searchName, searchPrice);
         } else {
             products = productDao.findAll();
         }
 
         model.addAttribute("products", products);
         model.addAttribute("searchName", searchName);
+        model.addAttribute("searchPrice", searchPrice);
         return "list";
     }
 

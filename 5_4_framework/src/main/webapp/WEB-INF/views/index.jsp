@@ -120,7 +120,7 @@
                 <div class="input-row">
                     <label><spring:message code="label.price" /> :</label>
                     <div class="input-column">
-                        <input type="text" disabled style="background-color: #e9ecef;" />
+                        <input type="number" name="searchPrice" />
                     </div>
                 </div>
                 <div class="button-row">
