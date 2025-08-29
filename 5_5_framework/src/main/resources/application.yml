@@ -1,0 +1,98 @@
+# Spring Boot設定ファイル
+spring:
+  application:
+    name: user-management-system
+  
+  # データベース設定
+  datasource:
+    url: jdbc:postgresql://localhost:5432/sampledb_task
+    username: hogeuser
+    password: hoge
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      idle-timeout: 300000
+      max-lifetime: 1800000
+      connection-timeout: 30000
+  
+  # JPA設定
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    open-in-view: false
+  
+  # Thymeleaf設定
+  thymeleaf:
+    cache: false
+    encoding: UTF-8
+    mode: HTML
+    prefix: classpath:/templates/
+    suffix: .html
+  
+  # セッション設定
+  session:
+    timeout: 30m
+    store-type: memory
+  
+  # セキュリティ設定
+  security:
+    user:
+      password: disabled # デフォルトユーザーを無効化
+
+# サーバー設定
+server:
+  port: 8080
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+    session:
+      timeout: 30m
+
+# ログ設定
+logging:
+  level:
+    jp.co.web: DEBUG
+    org.springframework.security: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+  pattern:
+    console: '%d{yyyy-MM-dd HH:mm:ss} - %msg%n'
+
+---
+# 開発環境設定
+spring:
+  profiles: development
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+
+---
+# 本番環境設定
+spring:
+  profiles: production
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: validate
+  
+logging:
+  level:
+    root: WARN
+    jp.co.web: INFO
